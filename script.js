@@ -25,7 +25,6 @@ const clearInput = function () {
 
 document.querySelector(".check").addEventListener("click", function () {
   const guess = Number(input.value);
-  // console.log(typeof guess);
 
   // Guard clause
   if (!guess || guess > 20) {
@@ -67,4 +66,39 @@ document.querySelector(".again").addEventListener("click", function () {
 
   document.querySelector(".score").textContent = score;
   document.querySelector("body").style.backgroundColor = "#333";
+});
+
+window.addEventListener("keydown", function (e) {
+  const guess = Number(input.value);
+
+  if (e.key === "Enter") {
+    // Guard clause
+    if (!guess || guess > 20) {
+      clearInput();
+      displayMessage("No number!");
+      // if input value IS the same as secret number
+    } else if (guess === secretNumber) {
+      displayMessage("You guessed the number!");
+      number.textContent = secretNumber;
+      document.querySelector("body").style.backgroundColor = "#60b347";
+
+      // If score is bigger than highscore
+      if (score > highscore) {
+        highscore = score;
+        document.querySelector(".highscore").textContent = highscore;
+      }
+
+      // if input value is HIGHER or LOWER than secret number
+    } else if (guess !== secretNumber) {
+      clearInput();
+      if (score > 1) {
+        displayMessage(guess > secretNumber ? "Too high!" : "Too low!");
+        score--;
+        document.querySelector(".score").textContent = score;
+      } else {
+        displayMessage("You lost the game!");
+        document.querySelector(".score").textContent = 0;
+      }
+    }
+  }
 });
